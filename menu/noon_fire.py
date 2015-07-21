@@ -58,27 +58,34 @@ def get_seconds(var):
 
 
 while loop:
-	current_time_read = datetime.datetime.now().time()
+	current_time_read = datetime.datetime.now()
 	current_time = current_time_read.strftime("%H:%M:%S")
 	
 	noon, warning_time, fire_duration = time_firing()
+	warn_time=warning_calc(noon, warning_time)
 	
-
-	warn_time=warning_calc(noon, warning_time)		
+	#convert these to datetime objects
+	noon_temp = time.strptime(str(current_time_read.day)+" "+str(current_time_read.month)+ " "+str(current_time_read.year) +" "+str(noon).replace(":", " "), "%d %m %Y %H %M %S")
+	warning_temp = time.strptime(str(current_time_read.day)+" "+str(current_time_read.month)+ " "+str(current_time_read.year) +" "+str(warn_time).replace(":", " "), "%d %m %Y %H %M %S")
+	noon_dt = datetime.datetime(*noon_temp[:6])
+	warning_dt  =  datetime.datetime(*warning_temp[:6])			
 	
 	'''print "warning time: " + warn_time
 	print "Firing time: " + noon
 	print "current time: " + current_time'''
 
 	float_fire_duration = float(fire_duration)
-	if current_time == warn_time and current_time < noon:
+	
+	if (current_time_read-warning_dt).total_seconds()>0 and (current_time_read-noon_dt).total_seconds()<0 and not countdown_flag:
+		print (current_time_read-warning_dt).total_seconds()
 		countdown_flag = True
 		print "warning"
 		GPIO.output(warn_gun, True)
 		time.sleep(float_fire_duration)
 		GPIO.output(warn_gun, False)
-	elif current_time == noon:
+	elif current_time_read.time() >= noon_dt.time():
 		GPIO.output(fire_gun, True)
+		print current_time_read.time()
 		print "BOOOOOM!!!"
 		time.sleep(float_fire_duration)
 		GPIO.output(fire_gun, False)
@@ -86,9 +93,10 @@ while loop:
 		loop=False
 	elif countdown_flag:
 		current_s = get_seconds(current_time)
-		if current_s-tm >= 1:
+		if current_s-tm >= 1 and (current_time_read - noon_dt).total_seconds() < -2:
+			time.sleep(0.3)
 			GPIO.output(count_gun, True)
-			time.sleep(0.7)
+			time.sleep(1.3)
 			GPIO.output(count_gun, False)
 			print "second!!"
 			tm = current_s
