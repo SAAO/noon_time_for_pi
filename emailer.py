@@ -10,4 +10,4 @@ curs.execute(gps_select)
 gps = [dict(gpstime=row[1], gpsstatus=row[2], longitude=row[3], lattitude=row[4]) for row in curs.fetchall()]
 print type(gps)
 now = datetime.datetime.now()
-os.system("echo 'This is the noon gun firing timer. \n The time is now {0} \n GPS DATA: \n {1}' | mail -s 'Time' -t jeran@saao.ac.za".format(str(now), str(gps[0])))
+os.system("echo 'This is the noon gun firing timer. \n The time is now {0} \n GPS DATA: \n {1}' | mail -s 'Time' -t timeservice@list.saao.ac.za".format(str(now), str(gps[0])))
