@@ -1,5 +1,0 @@
-File:			time_service.py
-Line:			284
-Module:			<module>
-Error Type:		NameError
-Error:			name 'gps_status' is not defined
