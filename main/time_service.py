@@ -254,7 +254,7 @@ def setup_logging():
 
  #=====================================================================================================
 if __name__ == '__main__':
-        setup_logging(args)
+        setup_logging()
         log.info("Starting {}.".format(__file__))
 
 	fd = lcd.init()
