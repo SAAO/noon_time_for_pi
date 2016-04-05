@@ -135,6 +135,7 @@ def pulse_read():
 	return pulse[0]['selection']
 
 def IO(previous_option):
+	log.debug("Entering IO()")
 	try:
 		os.system('clear')
 		option = str(pulse_read())
@@ -144,10 +145,12 @@ def IO(previous_option):
 	except:
 		print "error oFFF"
 		GPIO.output(LIGHT_PULSE_ON, False)
-
+	
+	log.debug("Exiting IO()")
 	return option
 	
 def time_pulse(option):
+	log.debug("Entering time_pulse()")
 	GPIO.output(LIGHT_PULSE_ON, False)
 	if option == '1PPS':
 		os.system("bash /home/time_for_pi/gps_setup/invert_khz")
@@ -197,10 +200,12 @@ def time_pulse(option):
 		print "ON"
 		time.sleep(delay)
 		GPIO.output(LIGHT_PULSE_ON, True)
+	log.debug("Exiting time_pulse()")
 	return 
 	
 #=====================================================================================================	
 def gps_data(gps_time, gps_status, gps_long, gps_lat, gps_tdate):
+	log.debug("Entering gps_data()")
 	try:
         	conn=sqlite3.connect('/home/time_for_pi/frontpage/timeserver.db', timeout=1)
         	curs=conn.cursor()
@@ -208,10 +213,12 @@ def gps_data(gps_time, gps_status, gps_long, gps_lat, gps_tdate):
         	conn.commit()
 	except:
 		return
+	log.debug("Exiting gps_data()")
         return
  #=====================================================================================================
 class GpsPoller(threading.Thread):
   def __init__(self):
+  	log.debug("Entering GpsPoller __init__()")
 	result = False
 	while not result:
 		try:
@@ -223,10 +230,13 @@ class GpsPoller(threading.Thread):
 			result = True
 		except:
 			pass
+	log.debug("Exiting GpsPoller __init__()")
   def run(self):
+  	log.debug("Entering GpsPoller run()")
 	global gpsd
 	while gpsp.running:
 		gpsd.next() #this will continue to loop and grab EACH set of gpsd info to clear the buffer
+	log.debug("Exiting GpsPoller run()")
 #=====================================================================================================
 
 def setup_logging():
