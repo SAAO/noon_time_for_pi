@@ -12,7 +12,7 @@ from math import *
 import re
 import datetime
 
-import logging as log
+#import logging as log
 #================================================================
 # Manifest constants
 #----------------------------------------------------------------
@@ -1074,6 +1074,7 @@ class JulianDate:
 
 #   @staticmethod
     def fromDatetime ( dt ):
+      log.debug("Entering fromDatetime()")
         """Create a JulianDate instance from a datetime.datetime.
 
           [ dt is a datetime.datetime instance ->
@@ -1128,6 +1129,7 @@ class JulianDate:
         j  =  B + C + D + d + 1720994
 
         #-- 9 --
+        log.debug("Exiting fromDatetime()")
         return  JulianDate ( j, fracDay )
     fromDatetime = staticmethod(fromDatetime)
 
