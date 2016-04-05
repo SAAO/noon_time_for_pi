@@ -12,7 +12,6 @@ from math import *
 import re
 import datetime
 
-#import logging as log
 #================================================================
 # Manifest constants
 #----------------------------------------------------------------
@@ -121,7 +120,6 @@ def dayNo ( dt ):
 T_PATTERN = re.compile ( '[tT]' )
 
 def parseDatetime ( s ):
-    log.debug("Entering parseDatetime()")
     """Parse a date with optional time.
 
       [ s is a string ->
@@ -1074,7 +1072,6 @@ class JulianDate:
 
 #   @staticmethod
     def fromDatetime ( dt ):
-      log.debug("Entering fromDatetime()")
         """Create a JulianDate instance from a datetime.datetime.
 
           [ dt is a datetime.datetime instance ->
