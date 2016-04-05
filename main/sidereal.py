@@ -121,7 +121,7 @@ def dayNo ( dt ):
 T_PATTERN = re.compile ( '[tT]' )
 
 def parseDatetime ( s ):
-  log.debug("Entering parseDatetime()")
+    log.debug("Entering parseDatetime()")
     """Parse a date with optional time.
 
       [ s is a string ->
