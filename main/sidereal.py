@@ -11,6 +11,8 @@
 from math import *
 import re
 import datetime
+
+import logging as log
 #================================================================
 # Manifest constants
 #----------------------------------------------------------------
@@ -35,6 +37,7 @@ EW_PAT  =  re.compile ( r'[eEwW]' )
 # - - -   h o u r s T o R a d i a n s
 
 def hoursToRadians ( hours ):
+  
     """Convert hours (15 degrees) to radians.
     """
     return  hours * PI_OVER_12
@@ -118,6 +121,7 @@ def dayNo ( dt ):
 T_PATTERN = re.compile ( '[tT]' )
 
 def parseDatetime ( s ):
+  log.debug("Entering parseDatetime()")
     """Parse a date with optional time.
 
       [ s is a string ->
@@ -155,6 +159,7 @@ def parseDatetime ( s ):
     else:
         timePart  =  parseTime ( rawTime )
     #-- 4 --
+    log.debug("Exiting parseDatetime()")
     return  datetime.datetime.combine ( datePart, timePart )
 # - - -   p a r s e D a t e
 
