@@ -1,0 +1,11 @@
+/var/log/time_service.log {
+        missingok
+        notifempty
+        size 30k
+        copytruncate
+        daily
+        rotate 30
+        compress
+        su root root
+}
+
