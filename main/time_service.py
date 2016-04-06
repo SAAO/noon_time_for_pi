@@ -207,12 +207,21 @@ def time_pulse(option):
 def gps_data(gps_time, gps_status, gps_long, gps_lat, gps_tdate):
 	log.debug("Entering gps_data()")
 	try:
-        	conn=sqlite3.connect('/home/time_for_pi/frontpage/timeserver.db', timeout=1)
-        	curs=conn.cursor()
-        	curs.execute(''' UPDATE gps_check SET gpstime=?, gpsstatus=?, tdate=?, longitude=?, lattitude=? ''', (gps_time, gps_status, gps_tdate, gps_long, gps_lat))
-        	conn.commit()
-	except:
-		return
+                conn=sqlite3.connect('/home/time_for_pi/frontpage/timeserver.db', timeout=1)
+        except:
+                log.error("Error caught in sql connection")
+                return
+        try:
+                curs=conn.cursor()
+        except:
+                log.error("Error caught getting sql cursor")
+                return
+        try:
+                curs.execute(''' UPDATE gps_check SET gpstime=?, gpsstatus=?, tdate=?, longitude=?, lattitude=? ''', (gps_time, gps_status, gps_tdate, gps_long, gps_lat))
+                conn.commit()
+        except Exception as e:
+                log.error("Error caught in sql execution or commit: {}".format(str(e)))
+                return
 	log.debug("Exiting gps_data()")
         return
  #=====================================================================================================
