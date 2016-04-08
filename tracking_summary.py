@@ -55,7 +55,7 @@ if __name__ == '__main__':
 		length=len(f_log)
 		end_dt=f_log[length-1][0] + " " + f_log[length-1][1]
 		the_line= start_dt + " ->" + end_dt + "		" + str(skew_ppm_avg) + "		" + str(offset_avg) + "		" + str(offset_sd_avg) + "		" + str(rem_corr_avg)
-		print the_line
+		#print the_line
 		#try to open file with append option if it does not exist create it
 		file=open("/var/log/chrony/tracking_summary.log" , "a")
 		file.write("Summary Period ================================= ppm skew =================== offset ============== offset sd =================== rem. corr. \n")
