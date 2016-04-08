@@ -73,13 +73,13 @@ while loop:
 	float_fire_duration = float(fire_duration)
 	if current_time == warn_time and current_time < noon:
 		countdown_flag = True
-		print "warning"
+		#print "warning"
 		GPIO.output(warn_gun, True)
 		time.sleep(float_fire_duration)
 		GPIO.output(warn_gun, False)
 	elif current_time == noon:
 		GPIO.output(fire_gun, True)
-		print "BOOOOOM!!!"
+		#print "BOOOOOM!!!"
 		time.sleep(float_fire_duration)
 		GPIO.output(fire_gun, False)
 		countdown_flag = False
@@ -90,5 +90,5 @@ while loop:
 			GPIO.output(count_gun, True)
 			time.sleep(0.7)
 			GPIO.output(count_gun, False)
-			print "second!!"
+			#print "second!!"
 			tm = current_s
