@@ -16,8 +16,6 @@ import fcntl
 import struct
 import sqlite3
 
-import logging as log
-
 
 traceback_template = '''Traceback (most recent call last):
   File "%(filename)s", line %(lineno)s, in %(name)s
@@ -73,14 +71,12 @@ gpsd = None #seting the global variable
 #os.system('clear') #clear the terminal (optional)
 
 def get_ip_address(ifname):
-    log.debug("Getting ip address")
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     ip = socket.inet_ntoa(fcntl.ioctl(
         s.fileno(),
         0x8915,  # SIOCGIFADDR
         struct.pack('256s', ifname[:15])
     )[20:24])
-    log.debug("Got ip address {}".format(ip))
     return ip
     # return socket.inet_ntoa(fcntl.ioctl(
     #     s.fileno(),
@@ -89,14 +85,11 @@ def get_ip_address(ifname):
     # )[20:24])
 
 def no_gps_fix():
-        log.debug("Entering no_gps_fix()")
 	lcd.clear(fd) #clear display
 	lcd.writeString("NO GPS FIX", fd)
-        log.debug("Exiting no_gps_fix()")
 	return
 #=====================================================================================================
 def display_ip(ip_chars):
-        log.debug("Displaying ip")
 	lcd.writeString("IP:", fd)
 	location=4
 	for char in ip_chars:
@@ -105,7 +98,6 @@ def display_ip(ip_chars):
 	while location<=20:
 		lcd.writeString(" ", fd)
 		location=location+1
-        log.debug("Done displaying ip")
 	return
 #=====================================================================================================
 def dech(time):
@@ -120,7 +112,6 @@ def dech(time):
 	return 0, 0, 0
 #=====================================================================================================
 def pulse_read():
-        log.debug("Entering pulse_read()")
 	try:
 		the_id=1
 		conn = sqlite3.connect('/home/time_for_pi/frontpage/timeserver.db', timeout=1)
@@ -129,9 +120,7 @@ def pulse_read():
 		curs.execute(firing_db)
 		pulse=[dict(selection=row[1]) for row in curs.fetchall()]
 	except:
-                log.warn("Exception in pulse_read(). Returning 7")
 		return 7
-        log.debug("Exiting pulse_read()")
 	return pulse[0]['selection']
 
 def IO(previous_option):
@@ -227,25 +216,8 @@ class GpsPoller(threading.Thread):
 	global gpsd
 	while gpsp.running:
 		gpsd.next() #this will continue to loop and grab EACH set of gpsd info to clear the buffer
-#=====================================================================================================
-
-def setup_logging():
-    # Set up logging
-    logfile = __file__.split('.py')[0] + ".log"
-    logfile = "/var/log/time_service.log"
-    print("Writing logs to {}".format(logfile))
-    loglevel = "debug"
-    log.basicConfig(filename=logfile,
-                    format='%(asctime)s: %(message)s',
-                    level=getattr(log, loglevel.upper()))
-
-
-
-
- #=====================================================================================================
+#=======================================================================================================
 if __name__ == '__main__':
-        setup_logging(args)
-        log.info("Starting {}.".format(__file__))
 
 	fd = lcd.init()
 	gpsp = GpsPoller() # create the thread
