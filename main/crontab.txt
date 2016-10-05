@@ -1,0 +1,4 @@
+0 8 * * * /usr/bin/python /home/time_for_pi/tracking_summary.py 2> /etc/tracking_error.txt
+* * * * *sudo bash /home/time_for_pi/main/python_check >/dev/null 2>&1
+0 11 * * * python /home/time_for_pi/emailer.py 2> /etc/email.log
+59 11 * * * sleep 40; /usr/bin/python /home/time_for_pi/menu/noon_fire.py 2> /etc/noon_error.txt # fire the noon gun
